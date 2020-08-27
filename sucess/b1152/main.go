@@ -1,18 +1,19 @@
 package main
 
 import (
-    "bufio"
-    "strings"
-    "os"
-    "fmt"
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
 )
-//bufio 사용
-func main()  {    
-    r := bufio.NewReader(os.Stdin)
-    input, _ := r.ReadString('\n')
-    s := strings.Fields(input)
 
-    fmt.Println(len(s))
+//bufio 사용
+func main() {
+	r := bufio.NewReader(os.Stdin)
+	input, _ := r.ReadString('\n')
+	s := strings.Fields(input)
+
+	fmt.Println(len(s))
 }
 
 /*
