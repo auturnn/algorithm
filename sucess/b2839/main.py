@@ -15,5 +15,4 @@ while True:
     cnt += 1
     n -= 3
 
-
 print(n)
