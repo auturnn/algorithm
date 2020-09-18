@@ -1,0 +1,131 @@
+package main
+
+import "fmt"
+
+// https://www.youtube.com/watch?v=xBgwKoZYA7k&t=901s
+type Node struct {
+	prev *Node //Double LinkedList
+	next *Node
+	val  int
+}
+
+type LinkedList struct {
+	root *Node
+	tail *Node
+}
+
+func (l *LinkedList) AddNode(val int) {
+	if l.root == nil {
+		l.root = &Node{val: val}
+		l.tail = l.root
+		return
+	}
+
+	l.tail.next = &Node{val: val}
+	prev := l.tail
+	l.tail = l.tail.next
+	l.tail.prev = prev
+}
+
+func (l *LinkedList) RemoveNode(node *Node) {
+	if node == l.root {
+		l.root = l.root.next
+		l.root.prev = nil
+		node.next = nil
+		return
+	}
+
+	prev := node.prev
+
+	if node == l.tail {
+		prev.next = nil
+		l.tail.prev = nil
+		l.tail = prev
+	} else {
+		node.prev = nil
+		prev.next = prev.next.next
+		prev.next.prev = prev
+	}
+
+	node.next = nil
+}
+
+func (l *LinkedList) PrintNode() {
+	node := l.root
+	for node.next != nil {
+		fmt.Printf("%d ->", node.val)
+		node = node.next
+	}
+
+	fmt.Printf("%d\n", node.val)
+}
+
+func (l *LinkedList) PrintReverse() {
+	node := l.tail
+	for node.prev != nil {
+		fmt.Printf("%d ->", node.val)
+		node = node.prev
+	}
+
+	fmt.Printf("%d\n", node.val)
+}
+
+func main() {
+	list := &LinkedList{}
+	list.AddNode(0)
+
+	for i := 1; i < 1000; i++ {
+		list.AddNode(i)
+	}
+	list.PrintNode()
+
+	list.RemoveNode(list.root.next)
+	list.PrintNode()
+
+	list.RemoveNode(list.root)
+	list.PrintNode()
+
+	list.RemoveNode(list.tail)
+	list.PrintNode()
+	fmt.Printf("tail:%d\n", list.tail.val)
+
+	list.PrintReverse()
+	fmt.Printf("root:%d\n", list.root.val)
+
+	list.RemoveNode(list.tail)
+	list.PrintNode()
+	fmt.Printf("tail:%d\n", list.tail.val)
+
+}
+
+// //Single LinkedList
+// func AddNode(tail *Node, val int) *Node {
+// 	node := &Node{val: val}
+// 	tail.next = node
+// 	return node
+// }
+
+// func RemoveNode(node *Node, root *Node, tail *Node) (*Node, *Node) {
+// 	if node == root {
+// 		root = root.next
+// 		if root == nil {
+// 			tail = nil
+// 		}
+// 		return root, tail
+// 	}
+
+// 	prev := root
+// 	for prev.next != node {
+// 		prev = prev.next
+// 	}
+
+// 	if node == tail {
+// 		prev.next = nil
+// 		tail = prev
+
+// 	} else {
+// 		prev.next = prev.next.next
+// 	}
+
+// 	return root, tail
+// }
